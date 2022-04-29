@@ -1,16 +1,124 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+#__next{
+  background-image: url(../public/background.png);
+  height: 100vh;
+}
+.container-fluid{
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+}
+.row{
+  --bs-gutter-x: 0px !important;
+}
+.col{
+  background-color: #FFF;
+  padding: 50px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px 0px 5px rgb(182, 182, 182);
+}
+.right-col{
+  width: 100px;
+  margin-left: 15px;
+  height: 100px;
+  background-color: rgb(236, 115, 115);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.img-right-col{
+  width: 90%;
+  height: 90%;
+  background-image: url(../public/tomate.png);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.buttonAdd{
+  display: flex;
+  justify-content: center;
 }
 
-* {
-  box-sizing: border-box;
+
+.alinhamentoModalAdd{
+  display: flex;
+  justify-content: center;
+}
+
+.filterBlur{
+  width: 70%;
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(20px);
+  position: absolute;
+  bottom: 0;
+  border-radius: 40px 40px 0px 0px;
+  z-index: 1000;
+}
+#modalAdd{
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  transition: all 0.6s linear;
+}
+
+button{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: none;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.inputBuscaCultivo{
+  
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.relativeInput{
+  position: relative;
+  width: 70%;
+}
+#modalAdd input{
+  width: 100%;
+  border-radius: 10px;
+  background-color: #CCC;
+  padding-left: 30px;
+}
+
+.fa-solid.fa-magnifying-glass{
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  z-index: 100;
+  top: 12px;
+  left: 10px;
+  background-image: url('../public/lupa.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+#modalAdd input::placeholder{
+  color: #000;
+}
+#blackWindow{
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  cursor: pointer;
+  z-index: 100;
+}
+
+#blackWindowHome{
+  background-color: rgba(100, 100, 100, 0.4);
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
 }
