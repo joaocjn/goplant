@@ -1,11 +1,25 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash, faEye, faDownLeftAndUpRightToCenter, faTemperatureHalf, faDroplet, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+
 import Head from 'next/head'
 import ModalAdd from './modalAdd'
+
 import {useState}  from 'react'
+//import Image from 'next/image'
+//import tomate from '../public/tomate.png'
 
 export default function Home() {
   const [displayGo, setDisplayGo] = useState('none')
   const [heightGo, setHeigthGo] = useState('0px')
-  
+  const [myPlantation, setMyPlantation] = useState(
+    [{name: 'Tomate', phase: 'Fase', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel arcu dignissim, molestie arcu ut, ultrices mi. Phasellus finibus at sapien id malesuada. Maecenas interdum ante sed justo eleifend consequat. Quisque ut libero ut nisl suscipit sagittis in et velit. Nullam ultricies luctus egestas. Praesent vel nunc leo. Phasellus ultrices tortor eget sapien tincidunt pretium. Nulla sit amet bibendum arcu. Mauris nec ligula a neque dictum fringilla. Interdum et malesuada fames ac ante ipsum primis in faucibus. Interdum et malesuada fames ac ante ipsum primis in faucibus.', temperature: '21°C', waterByDay: '2L/Dia', info3s: 'info3s', maturationTime: '20'}]
+  )
+  const [reserveMyPlantation, setReserveMyPlantation] = useState([])
+
+  const [expand, setExpand] = useState(false)
+  const [sizeImage, setSizeImage] = useState('')
+  const [backgroundCircleImage, setBackgroundCircleImage] = useState('')
+
   return (
     <div>
       <Head>
@@ -14,6 +28,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
   
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
+
+        <script src="https://kit.fontawesome.com/8a720f94e4.js" crossorigin="anonymous"></script>
       
         <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
@@ -28,39 +44,94 @@ export default function Home() {
         }
       }}></div>
       <div id="blackWindowHome">
-      <div class="container-fluid">  
-          <h1 class="mt-5 mb-3" style={{color: '#FFF'}}>Sua Plantação</h1>
-          <div class="row gap-4">
-            <div class="col">
-                <div class="left-col">
-                  <h4>Tomate</h4>
-                  <h4>Fase</h4>
-                </div>
-                <div class="right-col"><div className="img-right-col"></div></div>
-            </div>
-            <div class="col">
-              <div class="left-col">
-                  <h4>Tomate</h4>
-                  <h4>Fase</h4>
+      <div className="container-fluid">  
+          <h1 className="mt-5 mb-3" style={{color: '#FFF'}}>Sua Plantação</h1>
+          <div className="row gap-4">
+            {myPlantation.map((value, indice) => (
+              <div key = {indice} className="col">
+                  <div className="left-col">
+                    <h4>{value.name}</h4>
+                    {expand === false ?
+                      <h4>{value.phase}</h4> : ''
+                    }
+                    {expand === true ?
+                      <>
+                        <p>{value.description}</p>
+                        <div className="cardsInformation">
+                          <div className="card me-3">
+                            <FontAwesomeIcon className="cardFasIcon" icon={faTemperatureHalf} />
+                            {value.temperature}
+                          </div>
+                          <div className="card">
+                            <FontAwesomeIcon className="cardFasIcon" icon={faDroplet} />
+                            {value.waterByDay}
+                          </div>
+                          <div className="card ms-3">
+                            <FontAwesomeIcon className="cardFasIcon" icon={faCircleInfo} />
+                            {value.info3s}
+                          </div>
+                        </div> 
+                      </> : ''
+                      }
+                  </div>
+                  <div className="right-col">
+                    <div className="circleImage" style={{background: backgroundCircleImage}}>
+                      <div className="img-right-col" style={{width: sizeImage, height: sizeImage, backgroundImage: `url(/${value.name}.png)`}}></div>
+                    </div>
+                    {expand === true ?
+                      <>
+                        <div className="maturationTime">
+                          <h3 className='time'>Tempo de maturação</h3>
+                          <h3>{value.maturationTime} <span>DIAS</span></h3>
+                        </div>
+                        
+                        <button className="addPlantation" 
+                        onClick={() => {
+                          props.setMyPlantation([...props.myPlantation, {name: value.name, phase: value.phase, description: value.description, temperatura: value.temperature, waterByDay: value.waterByDay, info3s: value.info3s}])
+                        }}>
+                          PLANTAR
+                        </button>
+                      </> : ''
+                      }
+                  </div>
+                  {expand === false ?
+                  <div className="buttonsPlantation">
+                    <button className='eyeButton fas me-3' 
+                    onClick={() => {
+                      setReserveMyPlantation(myPlantation)
+                      setMyPlantation(myPlantation.filter((e, i) => {
+                        return i == indice
+                      }))
+                      setExpand(true)
+                      setSizeImage('300px')
+                      setBackgroundCircleImage('rgba(255, 255, 255, 0.0)')
+                    }}>
+                      <FontAwesomeIcon icon={faEye} />
+                    </button>
+                    <button className="trashButton fas" onClick={()=> {
+                      setMyPlantation(myPlantation.filter((e, i) => {
+                        return i !== indice
+                      }))
+                    }}> 
+                      <FontAwesomeIcon icon={faTrash}/> 
+                    </button>
+                  </div> : ''
+                  }
+                  {expand === true ?
+                    <button className='minimizeButton fas me-3' 
+                    onClick={() => {
+                      setMyPlantation(reserveMyPlantation)
+                      setExpand(false)
+                      setSizeImage('90px')
+                      setBackgroundCircleImage('rgb(236, 115, 115)')
+                    }}>
+                      <FontAwesomeIcon icon={faDownLeftAndUpRightToCenter} />
+                    </button> : ''
+                  }
               </div>
-              <div class="right-col"><div className="img-right-col"></div></div>
-            </div>
-            <div class="col">
-              <div class="left-col">
-                  <h4>Tomate</h4>
-                  <h4>Fase</h4>
-              </div>
-                  <div class="right-col"><div className="img-right-col"></div></div>  
-            </div>
-            <div class="col">
-              <div class="left-col">
-                  <h4>Tomate</h4>
-                  <h4>Fase</h4>
-              </div>
-                  <div class="right-col"><div className="img-right-col"></div></div>  
-            </div>
+            ))}
           </div>
-          <div class="buttonAdd mt-5">
+          <div className="buttonAdd mt-5">
               <button id="buttonAdd" onClick={()=>{
                 if(displayGo === 'none'){
                   setDisplayGo('flex')
@@ -70,7 +141,7 @@ export default function Home() {
                 }
               }}>+</button>
           </div>
-          <ModalAdd display={displayGo} height ={heightGo}/>
+          <ModalAdd display={displayGo} height ={heightGo} myPlantation = {myPlantation} setMyPlantation = {setMyPlantation} />
         </div>
       </div>
     </div>
